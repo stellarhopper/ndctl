@@ -1,0 +1,9 @@
+dist: xenial
+language: c
+sudo: required
+ccache: ccache
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq --no-install-recommends -y systemd dh-systemd libkmod2 libkmod-dev libudev1 libudev-dev keyutils libkeyutils-dev libjson-c-dev libuuid1 asciidoctor jq
+  - ./autogen.sh
