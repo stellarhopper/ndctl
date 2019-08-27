@@ -1,0 +1,23 @@
+name: C/C++ CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v1
+    - name: prepare
+      run: sudo apt-get update -qq
+      run: sudo apt-get install -qq --no-install-recommends -y systemd dh-systemd libkmod2 libkmod-dev libudev1 libudev-dev keyutils libkeyutils-dev libjson-c-dev libuuid1 asciidoctor jq kmod dracut build-essential git-core libelf-dev asciidoc binutils-dev
+      run: sudo apt-get build-dep linux-image-$(uname -r)
+    - name: autogen
+      run: ./autogen.sh
+    - name: configure
+      run: ./configure CFLAGS='-g -O2' --prefix=/usr --sysconfdir=/etc --libdir=/usr/lib
+    - name: make
+      run: make
+    - name: install
+      run: sudo make install
